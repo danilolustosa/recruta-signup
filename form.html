@@ -1,0 +1,74 @@
+<h1>Cadastro de candidato</h1>
+<br>
+
+Nome:
+<br>
+<input type="text" id="nome">
+<br><br>
+
+Telefone:
+<br>
+<input type="text" id="telefone">
+<br><br>
+
+Oportunidade:
+<br>
+<input type="text" id="oportunidade">
+<br><br>
+
+Observações:
+<br>
+<textarea rows="10" cols="30" id="observacao"></textarea>
+<br><br>
+
+<button onclick="inserir()">Salvar</button>
+
+
+<!-- 
+    Aqui abaixo nós colocamos
+    o código javascript para construir o JSON
+    e enviá-lo a API
+-->
+
+<script language="javascript">
+    function inserir(){
+
+        //Criando variáveis com os dados obtidos
+        //nos campos do formulário no HTML
+        var nome = document.getElementById("nome").value
+        var telefone = document.getElementById("telefone").value
+        var oportunidade = document.getElementById("oportunidade").value
+        var observacao = document.getElementById("observacao").value
+
+
+        //Construindo o JSON que será
+        //enviado para a API
+        var json = {
+            'nome': nome,
+            'telefone': telefone,
+            'oportunidade': oportunidade,
+            'observacao': observacao
+        }
+
+        //Enviando para a API o json 
+        //construído na etapa anterior
+        fetch('http://127.0.0.1:5000/candidato/inserir',
+        {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+            },
+            method: "POST",
+            body: JSON.stringify(json)
+        })
+        .then(function(res){ 
+            res.json()
+                .then(data => {
+                    console.log(data)
+                    alert(data.message)
+                })
+        })
+        .catch(function(res){ console.log(res) })
+    }
+</script>
